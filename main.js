@@ -76,12 +76,11 @@ const posts = [
 const container = document.querySelector('#container');
 
 
-
 //Stampo i miei post dinamicamente
 
 posts.forEach(element => {
 
-
+ 
     const post = `
     <div class="post">
     <div class="post__header">
@@ -102,7 +101,7 @@ posts.forEach(element => {
     <div class="post__footer">
         <div class="likes js-likes">
             <div class="likes__cta">
-                <a class="like-button  js-like-button" href="" data-postid="">
+                <a class="like-button  js-like-button" href="" data-postid="" id="number" onclick="incrementValue()">
                     <i class="like-button__icon fas fa-thumbs-up" aria-hidden="true"></i>
                     <span class="like-button__label">Mi Piace</span>
                 </a>
@@ -129,4 +128,12 @@ function formatDate(date) {
 const dateAsArray = date.split('-')
 //ritorno la data invertita in base all'indice
 return dateAsArray[2] + '/' + dateAsArray[1] + '/' + dateAsArray[0]
+}
+
+
+
+//funzione per incrementare i like
+
+function incrementValue() {
+    console.log('click')
 }
