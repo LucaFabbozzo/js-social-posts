@@ -72,13 +72,17 @@ const posts = [
     }
 ];
 
-//Prendo il mio container
-
+//Prendo gli elementi che mi servono
 const container = document.querySelector('#container');
+
+
 
 //Stampo i miei post dinamicamente
 
 posts.forEach(element => {
+
+    const date = new Date(element.created)
+
     const post = `
     <div class="post">
     <div class="post__header">
@@ -88,7 +92,7 @@ posts.forEach(element => {
             </div>
             <div class="post-meta__data">
                 <div class="post-meta__author">${element.author.name}</div>
-                <div class="post-meta__time">${element.created}</div>
+                <div class="post-meta__time">${date}</div>
             </div>                    
         </div>
     </div>
@@ -99,7 +103,7 @@ posts.forEach(element => {
     <div class="post__footer">
         <div class="likes js-likes">
             <div class="likes__cta">
-                <a class="like-button  js-like-button" href="#" data-postid="1">
+                <a class="like-button  js-like-button" href="" data-postid="">
                     <i class="like-button__icon fas fa-thumbs-up" aria-hidden="true"></i>
                     <span class="like-button__label">Mi Piace</span>
                 </a>
@@ -113,4 +117,24 @@ posts.forEach(element => {
     `;
 
     container.innerHTML += post;
+
 })
+
+
+
+//funzione per formattare le date
+
+function calcoloOra() {
+    const adesso = new Date();
+    let giorno = adesso.getDate();
+    let mese = adesso.getMonth() + 1;
+    let anno = adesso.getFullYear();
+    
+    if(giorno < 10) giorno = "0" + giorno;
+    if(mese < 10) mese = "0" + mese;
+
+    return giorno
+ }
+
+
+console.log(calcoloOra())
