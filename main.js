@@ -81,7 +81,6 @@ const container = document.querySelector('#container');
 
 posts.forEach(element => {
 
-    const date = new Date(element.created)
 
     const post = `
     <div class="post">
@@ -92,7 +91,7 @@ posts.forEach(element => {
             </div>
             <div class="post-meta__data">
                 <div class="post-meta__author">${element.author.name}</div>
-                <div class="post-meta__time">${date}</div>
+                <div class="post-meta__time">${formatDate(element.created)}</div>
             </div>                    
         </div>
     </div>
@@ -123,18 +122,11 @@ posts.forEach(element => {
 
 
 //funzione per formattare le date
-
-function calcoloOra() {
-    const adesso = new Date();
-    let giorno = adesso.getDate();
-    let mese = adesso.getMonth() + 1;
-    let anno = adesso.getFullYear();
-    
-    if(giorno < 10) giorno = "0" + giorno;
-    if(mese < 10) mese = "0" + mese;
-
-    return giorno
- }
-
-
-console.log(calcoloOra())
+// date: YYYY-MM-DD
+// output date: DD-MM-YYYY
+function formatDate(date) {
+//trasformo la data in un array
+const dateAsArray = date.split('-')
+//ritorno la data invertita in base all'indice
+return dateAsArray[2] + '/' + dateAsArray[1] + '/' + dateAsArray[0]
+}
