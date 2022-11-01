@@ -14,6 +14,7 @@
 
 //Base Dati
 
+
 const posts = [
     {
         "id": 1,
@@ -72,68 +73,77 @@ const posts = [
     }
 ];
 
-//Prendo gli elementi che mi servono
+const userLikes = [1, 3, 4];
+
+
 const container = document.querySelector('#container');
+container.innerHTML = '';
 
-
-//Stampo i miei post dinamicamente
-
-posts.forEach(element => {
-
- 
-    const post = `
-    <div class="post">
-    <div class="post__header">
-        <div class="post-meta">                    
-            <div class="post-meta__icon">
-                <img class="profile-pic" src="${element.author.image}" alt="${element.author.name}">                    
-            </div>
-            <div class="post-meta__data">
-                <div class="post-meta__author">${element.author.name}</div>
-                <div class="post-meta__time">${formatDate(element.created)}</div>
-            </div>                    
-        </div>
-    </div>
-    <div class="post__text">${element.content}</div>
-    <div class="post__image">
-        <img src="${element.media}" alt="">
-    </div>
-    <div class="post__footer">
-        <div class="likes js-likes">
-            <div class="likes__cta">
-                <a class="like-button  js-like-button" href="" data-postid="" id="number" onclick="incrementValue()">
-                    <i class="like-button__icon fas fa-thumbs-up" aria-hidden="true"></i>
-                    <span class="like-button__label">Mi Piace</span>
-                </a>
-            </div>
-            <div class="likes__counter">
-                Piace a <b id="like-counter-1" class="js-likes-counter">${element.likes}</b> persone
-            </div>
-        </div> 
-    </div>            
-    </div>
-    `;
-
-    container.innerHTML += post;
-
+posts.forEach(post => {
+    container.innerHTML += getPostTemplate(post);
 })
 
+function getPostTemplate(post) {
 
+    const{id, author, content, media, likes, created} = post
 
-//funzione per formattare le date
-// date: YYYY-MM-DD
-// output date: DD-MM-YYYY
-function formatDate(date) {
-//trasformo la data in un array
-const dateAsArray = date.split('-')
-//ritorno la data invertita in base all'indice
-return dateAsArray[2] + '/' + dateAsArray[1] + '/' + dateAsArray[0]
+    return `
+    <div class="post">
+            <div class="post__header">
+                <div class="post-meta">                    
+                    <div class="post-meta__icon">
+                      ${author.image ? getImageProfile(author) : getProfileDefault(author)}
+                    </div>
+                    <div class="post-meta__data">
+                        <div class="post-meta__author">${author.name}</div>
+                        <div class="post-meta__time">${created}</div>
+                    </div>                    
+                </div>
+            </div>
+            <div class="post__text">${content}</div>
+            <div class="post__image">
+                <img src="${media}" alt="">
+            </div>
+            <div class="post__footer">
+                <div class="likes js-likes">
+                    <div class="likes__cta">
+                        <a class="like-button  js-like-button ${isPostLiked(id) ? 'like-button--liked' : ''}" href="#" data-postid="${id}">
+                            <i class="like-button__icon fas fa-thumbs-up" aria-hidden="true"></i>
+                            <span class="like-button__label">Mi Piace</span>
+                        </a>
+                    </div>
+                    <div class="likes__counter">
+                        Piace a <b id="like-counter-${id}" class="js-likes-counter">${likes}</b> persone
+                    </div>
+                </div> 
+            </div>            
+        </div> 
+    `
+}
+
+function isPostLiked(id) {
+    return userLikes.includes(id);
 }
 
 
 
-//funzione per incrementare i like
 
-function incrementValue() {
-    console.log('click')
+function getImageProfile(author) {
+    const {image} = author;
+    return `<img class="profile-pic" src="${image}" alt="Phil Mangione"> `
+}
+
+function getProfileDefault(author) {
+    const {name} = author;
+
+    //per trovare qualsiasi iniziale maiuscola
+    let initials = '';
+    const nameParts = name.split(' ');
+    nameParts.forEach(part => {
+        initials += part[0];
+    })
+
+    return `<div class="profile-pic-default">
+                <span>${initials}</span>
+            </div>`
 }
