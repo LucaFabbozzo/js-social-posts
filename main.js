@@ -96,7 +96,7 @@ function getPostTemplate(post) {
                     </div>
                     <div class="post-meta__data">
                         <div class="post-meta__author">${author.name}</div>
-                        <div class="post-meta__time">${created}</div>
+                        <div class="post-meta__time">${formatDate(created)}</div>
                     </div>                    
                 </div>
             </div>
@@ -121,11 +121,44 @@ function getPostTemplate(post) {
     `
 }
 
-function isPostLiked(id) {
-    return userLikes.includes(id);
+const likesButtons = document.querySelectorAll('.like-button'); 
+
+likesButtons.forEach(likebutton => {
+    likebutton.addEventListener('click', function(event) {
+        //impedisco al tag a di funzionare
+        event.preventDefault();
+        //prendo l'id del post
+        const postId = parseInt(this.getAttribute('data-postid'));
+        const counterDisplay = document.getElementById('like-counter-' + postId)
+        let likes = parseInt(counterDisplay.innerText);
+        console.log(likes)
+        //se è attivo lo disattivo e videversa
+        if(this.classList.contains('like-button--liked')) {
+            this.classList.remove('like-button--liked');
+            counterDisplay.innerText = --likes
+        } else {
+            this.classList.add('like-button--liked');
+            counterDisplay.innerText = ++likes
+        }
+        const likedPost = posts.filter(post => {
+            return post.id === postId;
+        })
+        likedPost[0].likes = likes;
+
+        console.log(posts)
+    })
+})
+
+ 
+function formatDate(date) {
+    return date.split('-').reverse().join('/');
 }
 
 
+
+function isPostLiked(id) {
+    return userLikes.includes(id);
+}
 
 
 function getImageProfile(author) {
